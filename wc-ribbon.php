@@ -50,7 +50,7 @@ define( 'KAGG_WC_RIBBON_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
  */
 define( 'KAGG_WC_RIBBON_FILE', __FILE__ );
 
-require_once KAGG_WC_RIBBON_PATH . 'vendor/autoload.php';
+require_once KAGG_WC_RIBBON_PATH . '/vendor/autoload.php';
 
 global $kagg_wc_ribbon_plugin;
 
