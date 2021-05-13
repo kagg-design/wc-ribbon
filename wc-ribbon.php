@@ -54,5 +54,5 @@ require_once KAGG_WC_RIBBON_PATH . '/vendor/autoload.php';
 
 global $kagg_wc_ribbon_plugin;
 
-$kagg_wc_ribbon_plugin = new Sale();
+$kagg_wc_ribbon_plugin = new Main();
 $kagg_wc_ribbon_plugin->init();
