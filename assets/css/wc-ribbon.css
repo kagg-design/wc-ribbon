@@ -1,0 +1,85 @@
+.archive.woocommerce ul.products li.product a .ribbon-wrapper {
+	left: calc(47.9% - 85px + 3px);
+}
+
+.archive.woocommerce ul.products li.product a .ribbon-wrapper.left {
+	left: -3px;
+}
+
+.woocommerce div.product div.images .woocommerce-product-gallery__image:nth-child(n+2) .ribbon-wrapper {
+	display: none;
+}
+
+.ribbon-wrapper {
+	width: 85px;
+	height: 88px;
+	overflow: hidden;
+	position: absolute;
+}
+
+.ribbon-wrapper.left {
+	top: -3px;
+	left: -3px;
+}
+
+.ribbon-wrapper.right {
+	top: -3px;
+	right: -3px;
+}
+
+.ribbon {
+	font-size: 14px;
+	font-weight: 700;
+	color: #333;
+	text-align: center;
+	text-shadow: rgba(255, 255, 255, 0.5) 0 1px 0;
+	position: relative;
+	padding: 7px 0;
+	top: 15px;
+	width: 120px;
+	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.ribbon-wrapper.left .ribbon {
+	left: -28px;
+}
+
+.ribbon-wrapper.right .ribbon {
+	left: -5px;
+}
+
+.ribbon.red {
+	color: #fff;
+	background-color: #e75d67;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#de4554), to(#e75d67));
+	background-image: -webkit-linear-gradient(top, #de4554, #e75d67);
+	background-image: -moz-linear-gradient(top, #de4554, #e75d67);
+	background-image: -ms-linear-gradient(top, #de4554, #e75d67);
+	background-image: -o-linear-gradient(top, #de4554, #e75d67);
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+}
+
+.ribbon.yellow {
+	color: #fff;
+	background-color: #ffe500;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#de4554), to(#e75d67));
+	background-image: -webkit-linear-gradient(top, #e2cf25, #ffe500);
+	background-image: -moz-linear-gradient(top, #e2cf25, #ffe500);
+	background-image: -ms-linear-gradient(top, #e2cf25, #ffe500);
+	background-image: -o-linear-gradient(top, #e2cf25, #ffe500);
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+
+@media screen and (max-width: 767px) {
+	.archive.woocommerce ul.products li.product a .ribbon-wrapper {
+		left: unset;
+	}
+}

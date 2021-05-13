@@ -13,10 +13,41 @@ namespace KAGG\WCRibbon;
 class Main {
 
 	/**
+	 * Render class instance.
+	 *
+	 * @var Render
+	 */
+	public Render $render;
+
+	/**
 	 * Init class.
 	 */
 	public function init(): void {
 		( new Sale() )->init();
 		( new Best() )->init();
+
+		$this->render = new Render();
+		$this->render->init();
+
+		add_action( 'woocommerce_init', [ $this, 'init_hooks' ] );
+	}
+
+	/**
+	 * Init hooks.
+	 */
+	public function init_hooks(): void {
+		add_action( 'wp_enqueue_scripts', [ $this, 'wp_enqueue_scripts' ] );
+	}
+
+	/**
+	 * Enqueue Scripts.
+	 */
+	public function wp_enqueue_scripts(): void {
+		wp_enqueue_style(
+			'wc-ribbon',
+			KAGG_WC_RIBBON_URL . '/assets/css/wc-ribbon.css',
+			[],
+			KAGG_WC_RIBBON_VERSION
+		);
 	}
 }

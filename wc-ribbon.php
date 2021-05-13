@@ -21,7 +21,7 @@
  * Domain Path:          /languages/
  */
 
-namespace KAGG\WCRibbon;
+use KAGG\WCRibbon\Main;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,6 +53,15 @@ define( 'KAGG_WC_RIBBON_FILE', __FILE__ );
 require_once KAGG_WC_RIBBON_PATH . '/vendor/autoload.php';
 
 global $kagg_wc_ribbon_plugin;
+
+/**
+ * Override WooCommerce function.
+ */
+function woocommerce_template_loop_product_thumbnail() {
+	global $kagg_wc_ribbon_plugin;
+
+	$kagg_wc_ribbon_plugin->render->woocommerce_template_loop_product_thumbnail();
+}
 
 $kagg_wc_ribbon_plugin = new Main();
 $kagg_wc_ribbon_plugin->init();
