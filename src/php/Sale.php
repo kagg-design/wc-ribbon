@@ -13,6 +13,50 @@ namespace KAGG\WCRibbon;
 class Sale {
 
 	/**
+	 * Product post type.
+	 */
+	protected const PRODUCT = 'product';
+
+	/**
+	 * Name of the meta to store ribbon value.
+	 *
+	 * @var string
+	 */
+	private string $meta;
+
+	/**
+	 * Label of the ribbon.
+	 *
+	 * @var string
+	 */
+	private string $label;
+
+	/**
+	 * Description of the ribbon.
+	 *
+	 * @var string
+	 */
+	private string $description;
+
+	/**
+	 * Name of the ribbon class.
+	 *
+	 * @var string
+	 */
+	private string $class;
+
+	/**
+	 * Sale constructor.
+	 */
+	public function __construct() {
+		$this->meta  = '_ribbon_sale';
+		$this->class = 'ribbon-sale';
+
+		$this->label       = 'Товар по акции';
+		$this->description = 'Отметить товар, продающийся по акции';
+	}
+
+	/**
 	 * Init class.
 	 */
 	public function init(): void {
@@ -23,31 +67,33 @@ class Sale {
 	 * Init hooks.
 	 */
 	public function init_hooks(): void {
-		add_action( 'woocommerce_product_options_general_product_data', [ $this, 'ribbon_admin_sale' ] );
-		add_action( 'woocommerce_process_product_meta', [ $this, 'ribbon_admin_sale_save' ] );
+		add_action( 'woocommerce_product_options_general_product_data', [ $this, 'ribbon_admin' ] );
+		add_action( 'woocommerce_process_product_meta', [ $this, 'ribbon_admin_save' ] );
 		add_filter( 'manage_edit-product_columns', [ $this, 'ribbon_column_into_product_list' ] );
 		add_action( 'manage_product_posts_custom_column', [ $this, 'ribbon_rows_into_product_list' ], 10, 3 );
 		add_action( 'quick_edit_custom_box', [ $this, 'ribbon_quick_edit_checkbox' ], 10, 3 );
-		add_action( 'admin_footer-edit.php', [ $this, 'ribbon_admin_footer_js_script' ], 11 );
-		add_action( 'save_post', [ $this, 'ribbon_admin_sale_save' ], 10, 3 );
+		add_action( 'admin_footer-edit.php', [ $this, 'ribbon_admin_footer_script' ], 11 );
+		add_action( 'save_post', [ $this, 'ribbon_admin_save' ], 10, 3 );
 	}
 
 	/**
 	 * Add product data.
 	 */
-	public function ribbon_admin_sale(): void {
+	public function ribbon_admin(): void {
 		global $post;
 
+		$meta         = $this->meta;
 		$product_meta = (object) get_post_meta( $post->ID );
-		$value        = ( isset( $product_meta->_ribbon_sale ) && 'yes' === $product_meta->_ribbon_sale[0] ) ? 'yes' : '';
+		$value        = ( isset( $product_meta->$meta ) && 'yes' === $product_meta->$meta[0] ) ? 'yes' : '';
+
 		echo '<div class="options_group">';
 		woocommerce_wp_checkbox(
 			[
-				'id'          => '_ribbon_sale',
+				'id'          => $this->meta,
 				'value'       => $value,
 				'cbvalue'     => 'yes',
-				'label'       => 'Товар по акции',
-				'description' => 'Отметить товар, продающийся по акции',
+				'label'       => $this->label,
+				'description' => $this->description,
 			]
 		);
 		echo '</div>';
@@ -58,12 +104,12 @@ class Sale {
 	 *
 	 * @param int $post_id Post id.
 	 */
-	public function ribbon_admin_sale_save( int $post_id ): void {
+	public function ribbon_admin_save( int $post_id ): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$ribbon_sale = isset( $_POST['_ribbon_sale'] ) ?
-			filter_input( INPUT_POST, '_ribbon_sale', FILTER_VALIDATE_INT ) :
+		$status = isset( $_POST[ $this->meta ] ) ?
+			filter_input( INPUT_POST, $this->meta, FILTER_SANITIZE_STRING ) :
 			'';
-		update_post_meta( $post_id, '_ribbon_sale', $ribbon_sale );
+		update_post_meta( $post_id, $this->meta, $status );
 	}
 
 	/**
@@ -74,7 +120,7 @@ class Sale {
 	 * @return array
 	 */
 	public function ribbon_column_into_product_list( array $defaults ): array {
-		$defaults['_ribbon_sale'] = 'Товар по акции';
+		$defaults[ $this->meta ] = $this->label;
 
 		return $defaults;
 	}
@@ -86,14 +132,14 @@ class Sale {
 	 * @param int    $post_id Post id.
 	 */
 	public function ribbon_rows_into_product_list( string $column, int $post_id ): void {
-		if ( '_ribbon_sale' !== $column ) {
+		if ( $this->meta !== $column ) {
 			return;
 		}
 
-		$arr_value = get_post_meta( $post_id, '_ribbon_sale', false );
+		$arr_value = get_post_meta( $post_id, $this->meta, false );
 		$value     = ( isset( $arr_value[0] ) && 'yes' === $arr_value[0] ) ?
-			'<span class="ribbon-sale" data-status="yes" style="color: #e1360c;">Товар по акции</span>' :
-			'<span class="ribbon-sale" data-status="no">&mdash;</span>';
+			'<span class="' . $this->class . '" data-status="yes" style="color: #e1360c;">' . $this->label . '</span>' :
+			'<span class="' . $this->class . '" data-status="no">&mdash;</span>';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $value;
 	}
@@ -105,17 +151,19 @@ class Sale {
 	 * @param string $type Post type.
 	 */
 	public function ribbon_quick_edit_checkbox( string $col, string $type ): void {
-		if ( 'product' !== $type || '_ribbon_sale' !== $col ) {
+		if ( self::PRODUCT !== $type || $this->meta !== $col ) {
 			return;
 		}
 
 		?>
 		<fieldset class="inline-edit-col-right">
 			<div class="inline-edit-col">
-				<h4>Товар по акции</h4>
+				<h4><?php echo esc_html( $this->label ); ?></h4>
 				<label class="alignleft">
-					<input type="checkbox" class="ribbon-sale-checkbox" name="_ribbon_sale" value="yes">
-					<span class="checkbox-title">Отметить товар, продающийся по акции</span>
+					<input
+							type="checkbox" class="<?php echo esc_attr( $this->class ); ?>-checkbox"
+							name="_ribbon_sale" value="yes">
+					<span class="checkbox-title"><?php echo esc_html( $this->description ); ?></span>
 				</label>
 			</div>
 		</fieldset>
@@ -125,12 +173,10 @@ class Sale {
 	/**
 	 * Admin footer script.
 	 */
-	public function ribbon_admin_footer_js_script(): void {
-		$slug = 'product';
-
+	public function ribbon_admin_footer_script(): void {
 		if (
-			( filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) === $slug ) ||
-			( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) === $slug )
+			( filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) === self::PRODUCT ) ||
+			( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) === self::PRODUCT )
 		) {
 			?>
 			<script type="text/javascript">
@@ -143,10 +189,10 @@ class Sale {
 						if ( _post_id > 0 ) {
 							var _post_slug = $( '#post-' + _post_id ),
 								_edit_slug = $( '#edit-' + _post_id ),
-								_payment_available_checkbox = $( '.ribbon-sale-checkbox', _edit_slug ),
-								_payment_available_status = $( 'td._ribbon_sale > span', _post_slug ).attr( 'data-status' );
-							if ( _payment_available_status === 'yes' ) _payment_available_checkbox.prop( 'checked', true );
-							else _payment_available_checkbox.prop( 'checked', false );
+								_checkbox = $( '.<?php echo esc_attr( $this->class ); ?>-checkbox', _edit_slug ),
+								_status = $( 'td.<?php echo esc_attr( $this->meta ); ?> > span', _post_slug ).attr( 'data-status' );
+							if ( _status === 'yes' ) _checkbox.prop( 'checked', true );
+							else _checkbox.prop( 'checked', false );
 						}
 					};
 				} )( jQuery );
