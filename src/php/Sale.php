@@ -16,11 +16,7 @@ class Sale {
 	 * Init class.
 	 */
 	public function init(): void {
-		if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
-			return;
-		}
-
-		add_action( 'plugins_loaded', [ $this, 'init_hooks' ], 0 );
+		add_action( 'woocommerce_init', [ $this, 'init_hooks' ] );
 	}
 
 	/**
@@ -41,6 +37,7 @@ class Sale {
 	 */
 	public function ribbon_admin_sale(): void {
 		global $post;
+
 		$product_meta = (object) get_post_meta( $post->ID );
 		$value        = ( isset( $product_meta->_ribbon_sale ) && 'yes' === $product_meta->_ribbon_sale[0] ) ? 'yes' : '';
 		echo '<div class="options_group">';
