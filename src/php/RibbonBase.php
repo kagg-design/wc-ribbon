@@ -147,7 +147,6 @@ abstract class RibbonBase {
 		?>
 		<fieldset class="inline-edit-col-left clear">
 			<div class="inline-edit-col">
-				<h4><?php echo esc_html( $this->label ); ?></h4>
 				<label class="alignleft">
 					<input
 							type="checkbox" class="<?php echo esc_attr( $this->class ); ?>-checkbox"
