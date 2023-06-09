@@ -20,6 +20,23 @@ class Main {
 	public Render $render;
 
 	/**
+	 * Get instance.
+	 *
+	 * @return Main
+	 */
+	public static function get_instance(): Main {
+		static $instance;
+
+		if ( ! $instance ) {
+			$instance = new self();
+
+			$instance->init();
+		}
+
+		return $instance;
+	}
+
+	/**
 	 * Init class.
 	 */
 	public function init(): void {

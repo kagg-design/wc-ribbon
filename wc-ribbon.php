@@ -33,12 +33,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version.
  */
-define( 'KAGG_WC_RIBBON_VERSION', '1.0.0' );
+const KAGG_WC_RIBBON_VERSION = '1.0.0';
 
 /**
  * Path to the plugin dir.
  */
-define( 'KAGG_WC_RIBBON_PATH', __DIR__ );
+const KAGG_WC_RIBBON_PATH = __DIR__;
 
 /**
  * Plugin dir url.
@@ -48,20 +48,17 @@ define( 'KAGG_WC_RIBBON_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 /**
  * Main plugin file.
  */
-define( 'KAGG_WC_RIBBON_FILE', __FILE__ );
-
-require_once KAGG_WC_RIBBON_PATH . '/vendor/autoload.php';
-
-global $kagg_wc_ribbon_plugin;
+const KAGG_WC_RIBBON_FILE = __FILE__;
 
 /**
- * Override WooCommerce function.
+ * Get plugin main class.
+ *
+ * @return Main
  */
-function woocommerce_template_loop_product_thumbnail() {
-	global $kagg_wc_ribbon_plugin;
+function kagg_wc_ribbon(): Main {
+	require_once KAGG_WC_RIBBON_PATH . '/vendor/autoload.php';
 
-	$kagg_wc_ribbon_plugin->render->woocommerce_template_loop_product_thumbnail();
+	return Main::get_instance();
 }
 
-$kagg_wc_ribbon_plugin = new Main();
-$kagg_wc_ribbon_plugin->init();
+kagg_wc_ribbon();
