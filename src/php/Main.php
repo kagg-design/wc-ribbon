@@ -13,13 +13,6 @@ namespace KAGG\WCRibbon;
 class Main {
 
 	/**
-	 * Render class instance.
-	 *
-	 * @var Render
-	 */
-	public Render $render;
-
-	/**
 	 * Get instance.
 	 *
 	 * @return Main
@@ -42,9 +35,7 @@ class Main {
 	public function init(): void {
 		( new Sale() )->init();
 		( new Best() )->init();
-
-		$this->render = new Render();
-		$this->render->init();
+		( new Render() )->init();
 
 		add_action( 'woocommerce_init', [ $this, 'init_hooks' ] );
 	}
