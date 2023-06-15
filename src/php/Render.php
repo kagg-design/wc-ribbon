@@ -88,6 +88,10 @@ class Render {
 	private function get_ribbons(): string {
 		global $product;
 
+		if ( ! $product ) {
+			return '';
+		}
+
 		$ribbons = [
 			[
 				'meta'     => '_ribbon_best',
