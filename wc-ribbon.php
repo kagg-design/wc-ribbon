@@ -10,7 +10,7 @@
  * Plugin Name:          WooCommerce Add Ribbon to Product
  * Plugin URI:           https://kagg.eu/en/
  * Description:          WooCommerce Add Ribbon to Product
- * Version:              1.2.1
+ * Version:              1.3.0
  * Requires at least:    4.4
  * Requires PHP:         7.4
  * Author:               Ivan Ovsyannikov, KAGG Design
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version.
  */
-const KAGG_WC_RIBBON_VERSION = '1.2.1';
+const KAGG_WC_RIBBON_VERSION = '1.3.0';
 
 /**
  * Path to the plugin dir.
