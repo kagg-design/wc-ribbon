@@ -51,6 +51,7 @@ class Render {
 	 *
 	 * @return string
 	 * @noinspection PhpMissingParamTypeInspection
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function woocommerce_product_get_image( $image, $product, $size, $attr, $placeholder ): string {
 		$ribbon = $this->get_ribbons();
@@ -63,12 +64,13 @@ class Render {
 	}
 
 	/**
-	 * Add ribbon to the image on product page.
+	 * Add ribbon to the image on the product page.
 	 *
 	 * @param string $html    Html of the thumbnail.
 	 * @param int    $post_id Post id.
 	 *
 	 * @return string
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function woocommerce_single_product_image_thumbnail_html( string $html, int $post_id ): string {
 		$ribbon = $this->get_ribbons();
@@ -95,12 +97,21 @@ class Render {
 		$ribbons = [
 			[
 				'meta'     => '_ribbon_best',
+				'class'	   => 'ribbon-best',
 				'position' => 'left',
 				'color'    => 'red',
 				'text'     => 'Топ продаж!',
 			],
 			[
+				'meta'     => '_ribbon_preorder',
+				'class'	   => 'ribbon-preorder',
+				'position' => 'left',
+				'color'    => 'red',
+				'text'     => 'Предзаказ из Европы!',
+			],
+			[
 				'meta'     => '_ribbon_sale',
+				'class'	   => 'ribbon-sale',
 				'position' => 'right',
 				'color'    => 'yellow',
 				'text'     => 'Акция!',
@@ -110,15 +121,16 @@ class Render {
 		$output = '';
 
 		foreach ( $ribbons as $ribbon ) {
-			$status = get_post_meta( $product->get_id(), $ribbon['meta'], false );
+			$status = get_post_meta( $product->get_id(), $ribbon['meta'] );
 
 			if ( ! isset( $status[0] ) || 'yes' !== $status[0] ) {
 				continue;
 			}
 
 			$output .=
-				'<div class="ribbon-wrapper ' . $ribbon['position'] . '"><div class="ribbon ' . $ribbon['color'] . '">' .
-				$ribbon['text'] . '</div></div>';
+				'<div class="ribbon-wrapper ' . $ribbon['position'] . '">' .
+				'<div class="ribbon ' . $ribbon['class'] . ' ' . $ribbon['color'] . '">' . $ribbon['text'] . '</div>' .
+				'</div>';
 		}
 
 		return $output;

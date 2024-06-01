@@ -33,8 +33,9 @@ class Main {
 	 * Init class.
 	 */
 	public function init(): void {
-		( new Sale() )->init();
 		( new Best() )->init();
+		( new Preorder() )->init();
+		( new Sale() )->init();
 		( new Render() )->init();
 
 		add_action( 'woocommerce_init', [ $this, 'init_hooks' ] );

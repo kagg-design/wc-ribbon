@@ -11,20 +11,20 @@
 }
 
 .ribbon-wrapper {
-	width: 85px;
-	height: 88px;
+	width: 110px;
+	height: 110px;
 	overflow: hidden;
 	position: absolute;
 }
 
 .ribbon-wrapper.left {
-	top: -3px;
-	left: -3px;
+	top: 0;
+	left: 0;
 }
 
 .ribbon-wrapper.right {
-	top: -3px;
-	right: -3px;
+	top: 0;
+	right: 0;
 }
 
 .ribbon {
@@ -47,35 +47,27 @@
 }
 
 .ribbon-wrapper.right .ribbon {
-	left: -5px;
+	right: -22px;
+}
+
+.ribbon-wrapper.left .ribbon.ribbon-preorder {
+	top: 39px;
+	left: -35px;
+	width: 180px;
 }
 
 .ribbon.red {
 	color: #fff;
 	background-color: #e75d67;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#de4554), to(#e75d67));
-	background-image: -webkit-linear-gradient(top, #de4554, #e75d67);
-	background-image: -moz-linear-gradient(top, #de4554, #e75d67);
-	background-image: -ms-linear-gradient(top, #de4554, #e75d67);
-	background-image: -o-linear-gradient(top, #de4554, #e75d67);
-	-webkit-transform: rotate(-45deg);
-	-moz-transform: rotate(-45deg);
-	-ms-transform: rotate(-45deg);
-	-o-transform: rotate(-45deg);
+	background-image: linear-gradient(180deg, #de4554, #e75d67);
+	transform: rotate(-45deg);
 }
 
 .ribbon.yellow {
 	color: #fff;
 	background-color: #ffe500;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#de4554), to(#e75d67));
-	background-image: -webkit-linear-gradient(top, #e2cf25, #ffe500);
-	background-image: -moz-linear-gradient(top, #e2cf25, #ffe500);
-	background-image: -ms-linear-gradient(top, #e2cf25, #ffe500);
-	background-image: -o-linear-gradient(top, #e2cf25, #ffe500);
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
+	background-image: linear-gradient(180deg, #e2cf25, #ffe500);
+	transform: rotate(45deg);
 }
 
 @media screen and (max-width: 767px) {
